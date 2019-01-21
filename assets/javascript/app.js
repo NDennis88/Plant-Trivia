@@ -3,32 +3,33 @@ var questions = [
     {
     q: "What is the oldest plant in the world?",
     options: ["Moss", "Great Basin Bristle Cone Pine", "Bamboo", "Palm"],
+    image: "assets/images/bristlecone-pines-4[6].jpg",
     answer: "Great Basin Bristle Cone Pine",
-    image: "<img src='assets/images/bristlecone-pines-4[6].jpg'>",
+  
     },
     {
     q:"Which houseplant thirives in high, medium and low lights?",
     options: ["Fiddle Leaf Fig", "Orchid", "ZZ Plant", "Elephant Ear"],
+    image: "assets/images/zzplantceramiccontainer-16062775131.jpg",
     answer: "ZZ Plant",    
-    image: ["<img src=''>"],
     }, 
     {
     q:"I am also known as the Mother-In-Law's tongue. Who am I?",
     options: ["Snake Plant", "Dracaena", "Lady Palm", "Bromeliad"],
+    image: "assets/images/gallery_the-sill_snake-plant_2_szeylanica-4-018_1024x1024.jpg",
     answer: "Snake Plant",    
-    image: ["<img src=''>"],
     },
     {
     q:"Plants that lose their leaves in the fall but don't die are called?",
     options: ["Evergreen", "Perennials", "Annuals", "Deciduous"],
+    image: "assets/images/giphy.gif",
     answer: "Deciduous",    
-    image: ["<img src=''>"],
     },
     {
     q:"Plants make their own food by doing what process?",
     options: ["Photosynthesis", "Respiration", "Transpiration", "Stressing"],
+    image: "assets/images/412D8BC700000578-4578888-image-a-1_1496846048690.jpg",  
     answer: "Photosynthesis",  
-    image: ["<img src=''>"],  
     },
 ] 
 
@@ -101,26 +102,25 @@ function showAnswer(userAnswer) {
   var question = questions[questionIndex];
   $app.empty();
   var img = $('<div id="image"></div>');
-  $app.append('<h2>Answer</h2>');
   $app.append('<h3>Correct Answer is: ' + question.answer + '</h3>');
   $app.append('<h3>You Selected: ' + userAnswer + '</h3>');
-  $img.append('<img src=' + question.image + '>');
+  img.append("<img src=" + question.image + ">");
 
   if (userAnswer === undefined) {
     // showTimeout();
     $app.append('<h5>Time out!</h5>');
     incorrect++;
-    app.append(img);
+    $app.append(img);
   } else if (userAnswer === question.answer) {
     // showCorrect();
     $app.append('<h5>Correct!</h5>');
     correct++;
-    app.append(img);
+    $app.append(img);
   } else {
     // showIncorrect();
     $app.append('<h5>Wrong Answer</h5>');
     incorrect++;
-    app.append(img);
+    $app.append(img);
   }
   questionIndex++;
   if (questionIndex < questions.length) {
@@ -128,6 +128,7 @@ function showAnswer(userAnswer) {
   } else {
     setTimeout(showResult, 5000);
   }
+
   if (questionIndex === questions.length){
     setTimeout(showScore, 3000);
   } else {
@@ -147,13 +148,20 @@ function showScore (){
   var correctAnswer = $('<h2>Correct Answers: ' + correct + '</h2>');
   var incorrectAnswer = $('<h2>Incorrect Answers: ' + incorrect + '</h2>');
   $app.append(correctAnswer, incorrectAnswer);
+  clearInterval(intervalId);
+//create button for user to click to restart game
+  var $redo = $('<button type="button" class="btn btn-warning">Start</button>');
+  $redo.on('click', showQuestion);
+  app.append($redo);
+  resetGame();
+  
 }
 
-function restartGame () {
-
+function resetGame(){
+  correctAnswer = 0;
+  wrongAnswer = 0;
+  unanswered = 0;
+  questionIndex = 0;
 }
-
-
-
 
 
