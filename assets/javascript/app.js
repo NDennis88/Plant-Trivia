@@ -46,7 +46,7 @@ init();
 
 //create a start button and click event that removes button after click event
 function init() {
-  var $start = $('<button type="button" class="btn btn-warning">Start</button>');
+  var $start = $('<button type="button" class="btn btn-info">Start</button>');
   $start.on('click', showQuestion);
   $app.empty();
   $app.append($start);
