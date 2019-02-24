@@ -40,13 +40,14 @@ var incorrect = 0;
 var questionIndex = 0;
 var remainingTime;
 var timer;
+var intervalId;
 
 //call function init
 init();
 
 //create a start button and click event that removes button after click event
 function init() {
-  var $start = $('<button type="button" class="btn btn-info">Start</button>');
+  var $start = $('<button type="button" class="btn btn-warning">Start</button>');
   $start.on('click', showQuestion);
   $app.empty();
   $app.append($start);
@@ -58,14 +59,20 @@ function init() {
 
 //creates function that displays clock and decreases time
 function displayClock(){
-  remainingTime--;
+  clearInterval(intervalId);
+  intervalId = setInterval(decrement, 1000);
+} 
+
 //when clock gets to zero the timer goes way and the question answer shows
-  if (remainingTime === 0){
-    clearInterval(timer);
-    showAnswer();
-  }
+function decrement(){
+  remainingTime--;
+
 //displays text with time countdown
   $('#clock').text(remainingTime);
+  if (remainingTime === 0){
+    clearInterval(intervalId);
+    showAnswer();
+  }
 }
 
 // sets the function that shows the question based on its location in the index and sets the timer 30 seconds and removes question after 30 seconds
@@ -77,9 +84,9 @@ function showQuestion() {
   var $question = $('<div class=card>');
 //defines the question from the question index, count down of the clock's remaining time, and the timer's decremental increment, and button
   var $clock = $('<div>Time Remaining: <span id="clock">'+remainingTime+'</span></div>');
-  var $q = $('<h2>'+ question.q + '</h2>')
+  var $q = $('<h2>'+ question.q + '</h2>');
   var $button;
-  timer = setInterval(displayClock, 1000);
+  timer = displayClock();
 //displays the clock and question onto the page
   $question.append($clock);
   $question.append($q);
@@ -123,16 +130,10 @@ function showAnswer(userAnswer) {
     $app.append(img);
   }
   questionIndex++;
-  if (questionIndex < questions.length) {
-    setTimeout(showQuestion, 5000);
-  } else {
-    setTimeout(showResult, 5000);
-  }
-
   if (questionIndex === questions.length){
     setTimeout(showScore, 3000);
   } else {
-    setTimeout(askQuestions, 3000);
+    setTimeout(showQuestion, 3000);
   }
 }
 
@@ -150,9 +151,9 @@ function showScore (){
   $app.append(correctAnswer, incorrectAnswer);
   clearInterval(intervalId);
 //create button for user to click to restart game
-  var $redo = $('<button type="button" class="btn btn-warning">Start</button>');
+  var $redo = $('<button type="button" class="btn btn-warning">Play Again?</button>');
   $redo.on('click', showQuestion);
-  app.append($redo);
+  $app.append($redo);
   resetGame();
   
 }
